@@ -47,4 +47,12 @@ Mutation check: 30 of 34 deliberate breakages are caught; the other four are equ
 
 ## Live run
 
-(added after the Studionet run)
+Deployed on Studionet: `0x2ffe18c68956A88726816E30C8A787e7b278F27e`, pinning `https://oziman13.github.io/genlayer-milestone-oracle-app/web/skill.md` with a 300 s minimum interval.
+
+| Step | Result |
+|---|---|
+| `witness()` | `BASELINE`, 2897 bytes, sha256 `b4f03173...9caa` |
+| `witness()` 335 s later | `UNCHANGED`, same bytes and hash |
+| `get_state_json` | `INTACT`, 2 readings, 0 changes |
+
+Both transactions are FINALIZED with result SUCCESS. Full record: `evidence/live-run-1.txt`. The `CHANGED` and `rebase` paths are covered by the local tests, not yet by a live run.
