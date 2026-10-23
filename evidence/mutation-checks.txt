@@ -1,0 +1,47 @@
+Mutation check: one deliberate breakage at a time, then the direct-mode suite. KILLED = a test failed.
+SKIP = the search pattern did not match the source (not counted).
+
+KILLED 0: 'status != 200' -> 'status != 201'
+KILLED 1: 'len(body) > MAX_BYTES' -> 'len(body) >= MAX_BYTES'
+KILLED 2: 'len(body) == 0' -> 'len(body) == 1'
+KILLED 3: 'hashlib.sha256(body).hexdigest()' -> 'hashlib.sha256(body[:-1]).hexdigest()'
+KILLED 4: 'if digest == self.baseline:' -> 'if digest != self.baseline:'
+KILLED 5: 'elif digest == self.baseline:' -> 'elif digest != self.baseline:'
+KILLED 6: 'self.changes = u32(int(self.changes) + 1)' -> 'self.changes = u32(int(self.changes) + 2)'
+KILLED 7: 'if not self.ever_changed:' -> 'if self.ever_changed:'
+KILLED 8: 'self.first_changed_at = bigint(now)' -> 'self.first_changed_at = bigint(0)'
+KILLED 9: 'now < int(self.last_checked) + int(self.min_interval)' -> 'now <= int(self.last_checked) + int(self.min_inter'
+KILLED 10: 'now < int(self.last_checked) + int(self.min_interval)' -> 'now < int(self.last_checked)'
+KILLED 11: 'int(self.last_checked) > 0 and' -> 'False and'
+KILLED 12: 'self.last_checked = bigint(now)' -> 'pass'
+KILLED 13: 'self.unreadable = u32(int(self.unreadable) + 1)' -> 'pass'
+KILLED 14: 'if self.baseline == "":' -> 'if self.last_hash == "":'
+SKIP   15: pattern not found: self.status = "INTACT"\n            outcome = "BASELINE"
+KILLED 16: 'if str(gl.message.sender_address).lower() != self.owner:' -> 'if False:'
+KILLED 17: 'if self.status != "CHANGED":' -> 'if False:'
+KILLED 18: 'digest == "" or digest != self.last_hash' -> 'digest == ""'
+KILLED 19: 'self.generation = u32(int(self.generation) + 1)' -> 'pass'
+SKIP   20: pattern not found: self.baseline = digest\n        self.baseline_bytes = self.l
+KILLED 21: 'MAX_HISTORY_RESERVED = 110' -> 'MAX_HISTORY_RESERVED = 100'
+SURVIVED 22: 'if int(self.history_count) >= MAX_HISTORY:' -> 'if int(self.history_count) > MAX_HISTORY:'
+KILLED 23: 'return "NONE" if self.status == "NEW" else self.status' -> 'return self.status'
+KILLED 24: 'return proposed == _canonical(_reading(url))' -> 'return True'
+SURVIVED 25: 'if not _valid_shape(parsed):' -> 'if False:'
+KILLED 26: 'not 300 <= min_interval_seconds <= 604800' -> 'not 1 <= min_interval_seconds <= 604800'
+KILLED 27: 'if not text.startswith("https://"):' -> 'if False:'
+SURVIVED 28: '"@" in authority or ":" in authority' -> '"@" in authority'
+SURVIVED 29: 'text != text.strip()' -> 'False'
+KILLED 30: 'c in \'"<>\\\\^`{|}#\'' -> 'c in \'"<>\\\\^`{|}\''
+KILLED 31: 'if text == "":' -> 'if text == "x":'
+KILLED 32: 'len(text) != 64 or' -> 'len(text) < 1 or'
+SKIP   33: pattern not found: all(c in "0123456789abcdef"
+KILLED 34: 'self.owner = str(gl.message.sender_address).lower()' -> 'self.owner = ""'
+KILLED 35: 'index >= int(self.history_count)' -> 'index > int(self.history_count)'
+KILLED 36: 'if int(self.baseline_bytes) == 0:' -> 'if False:'
+mutants: 34, killed: 30, survived: 4
+
+Equivalent survivors (no behaviour change):
+ 22: witness() pre-checks history length and _record() checks it again; the second check decides.
+ 25: the validator's shape check is redundant: the proposal must equal the validator's own canonical reading, which always has a valid shape.
+ 28: a port or colon in the host is already rejected by the host-name character check.
+ 29: a leading space fails the https:// prefix check and a trailing space fails the control-character check.
