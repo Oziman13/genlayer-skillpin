@@ -1,0 +1,32 @@
+SkillPin v0.1.0, live run on GenLayer Studionet, 2026-10-23 (Istanbul time, UTC+03:00)
+
+Contract address : 0x2ffe18c68956A88726816E30C8A787e7b278F27e
+Owner (deployer) : 0xde48a3e53d80c316a6a72575b9f7ad5141df76b9
+Constructor      : name "Milestone Oracle agent instructions"
+                   url  https://oziman13.github.io/genlayer-milestone-oracle-app/web/skill.md
+                   reviewed_sha256 "" (first reading becomes the baseline)
+                   min_interval_seconds 300
+
+1. Deploy          tx 0xa36ed01193c1f5cf37981ab766dd53598afd88eac5795b6e1bcd082645a5f26a   FINALIZED
+   get_state_json: status NEW, readings 0
+
+2. witness()       tx 0xac8f7d0652f0a4d7591e08d0a4b30b412a1dddab25233fc5716bdc92351b7f86
+   11:11:54   ACCEPTED, result SUCCESS, output "BASELINE"
+   consensus reading: {"bytes": 2897, "sha256": "b4f0317312403956a06f85be60d20a44f6a99a7791eb1d478037f80283fe9caa"}
+   4 validators agreed; one was cancelled after quorum was reached.
+
+3. witness()       tx 0x62e4b30b9484e1bbd153d63740f0c88dd99a299f826e27663f8b7b3dcc9c7975
+   11:17:29 (335 s after the first reading, interval is 300 s)   FINALIZED, result SUCCESS, output "UNCHANGED"
+   consensus reading: same 2897 bytes, same sha256
+   3 validators agreed; two were cancelled after quorum was reached.
+
+4. get_state_json after step 3:
+   status INTACT, readings 2, history_count 2, changes 0, ever_changed false, unreadable 0, generation 0,
+   baseline = last_hash = b4f0317312403956a06f85be60d20a44f6a99a7791eb1d478037f80283fe9caa,
+   baseline_bytes = last_bytes = 2897
+
+5. get_history_json(1): action UNCHANGED, id 1, generation 0, status INTACT, reading {state OK, bytes 2897, sha256 same}
+
+Not exercised in this run: CHANGED and rebase (covered by the local direct and glsim tests).
+Note: the Studio log pane also showed "gen_getContractCode ... can't adapt type 'dict'" lines. They come from Studio's own
+backend lookups for other contracts; the transactions above are unaffected.
